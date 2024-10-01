@@ -1,0 +1,26 @@
+header{
+    padding: 3% 8%;
+    background: cadetblue;
+}
+.header_div{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.right_header{
+    display: flex;
+    gap: 5%;
+}
+
+.rightnav{
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.activerightnav{
+    color: red;
+    text-decoration: none;
+
+}
