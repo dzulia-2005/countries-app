@@ -19,8 +19,8 @@ const Header:React.FC = ()=>{
             </div>
 
             <nav className={styles.right_header}>
-              <NavLink to="/" className={({isActive})=>
-               handleactivenav(isActive)}>HOME</NavLink>
+              <NavLink to="/articles" className={({isActive})=>
+               handleactivenav(isActive)}>Articles</NavLink>
 
               <NavLink to='/about' className={({isActive})=>
                   handleactivenav(isActive)}>About</NavLink>
