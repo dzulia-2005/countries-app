@@ -16,8 +16,7 @@ const Contact: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); 
-    console.log(formData); 
-    
+    console.log(formData);  
   };
 
   return (

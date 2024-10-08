@@ -4,14 +4,16 @@ export const article = [
         country: "Georgia",
         population: "3710000", 
         capital: "Tbilisi",
-        id:"1"
+        id:"1",
+        vote:0
     },
     {
         img:"http://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/800px-Flag_of_France.svg.png",
         country: "France",
         population: "3710000",
         capital: "Paris",
-        id:"2"
+        id:"2",
+        vote:0
     }
 ]
 
