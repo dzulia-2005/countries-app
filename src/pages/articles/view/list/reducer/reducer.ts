@@ -44,7 +44,7 @@ type Articlereducerinitialstate = {
         if (action.type === "delete") {
             const updatedCardList = articlelist.map(card => {
                 if (card.id === action.payload.id) {
-                    return { ...card, deleted: true }; // Mark as deleted
+                    return { ...card, deleted: true }; 
                 }
                 return card;
             });
@@ -54,7 +54,7 @@ type Articlereducerinitialstate = {
         if (action.type === "restore") {
             const updatedCardList = articlelist.map(card => {
                 if (card.id === action.payload.id) {
-                    return { ...card, deleted: false }; // Restore the card
+                    return { ...card, deleted: false };
                 }
                 return card;
             });
