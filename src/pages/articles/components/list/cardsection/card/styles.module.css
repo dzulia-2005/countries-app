@@ -1,5 +1,7 @@
 .cards{
-    height: 380px;
-    width: 60%;
+    height: 150px;
+    width: 64%;
     background: cadetblue;
+    margin: 20px 0;
+    display: flex;
 }

@@ -8,13 +8,15 @@ interface CardinfoProps {
 
 const Cardinfo:React.FC<CardinfoProps>=({id})=> {
   return (
-    <div>
-        <button>
-            <Link to = {`/articles/${id}`}>
+    <Link to = {`/articles/${id}`}>
+        <button onClick={(event)=>{
+            event.stopPropagation()
+        }}>
+            
                 More info
-            </Link>
+          
         </button>
-    </div>
+      </Link>
   )
 }
 
