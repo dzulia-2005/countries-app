@@ -8,10 +8,17 @@ const Contact: React.FC = () => {
     message: '',
   });
 
+  const [errormsg,setErrormsg] = useState<string>("")
+
+  const validateinp = (value:string) => {
+    return value.length > 8 ? 'მეტია 8-ზე!!!':""
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     console.log(`Changed ${name}: ${value}`); 
     setFormData({ ...formData, [name]: value });
+    setErrormsg(validateinp(value))
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -74,6 +81,7 @@ const Contact: React.FC = () => {
           ></textarea>
         </div>
         <button type="submit">Send</button>
+        <div style={{color:"red"}}>{errormsg}</div>
       </form>
     </div>
   );
