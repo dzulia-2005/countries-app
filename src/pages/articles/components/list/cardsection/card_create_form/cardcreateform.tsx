@@ -54,9 +54,25 @@ const Cardcreateform:React.FC<cardcreateformprops> = ({oncardcreate}) => {
   
   return (
     <form onSubmit={handlesubmit} style={{margin: '4% 8%'}}>
-            <input style={{ display: 'block', textAlign: 'center' }} name='country' value={country} onChange={handlechangecountry} />
-            <input style={{ display: 'block', textAlign: 'center' }} name='population' value={population} onChange={handlechangepopulation} />
-            <input style={{ display: 'block', textAlign: 'center' }} name='capital' value={capital} onChange={handlechangecapital} />
+
+            <input style={{ display: 'block', textAlign: 'center' }}
+                name='country' 
+                value={country} 
+                onChange={handlechangecountry} 
+             />
+
+            <input style={{ display: 'block', textAlign: 'center' }} 
+                name='population' 
+                value={population} 
+                onChange={handlechangepopulation} 
+            />
+
+            <input style={{ display: 'block', textAlign: 'center' }} 
+                name='capital' 
+                value={capital} 
+                onChange={handlechangecapital} 
+            />
+            
         <button>Create card</button>
         <div style={{color:'red'}}>{errormsg}</div>
     </form>
