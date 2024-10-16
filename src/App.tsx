@@ -14,12 +14,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route element={<LazyDefaultlayout />}>
         <Route
           path='/'
           element = {<div>Landing page</div>}
-        
         />
+
 
           <Route 
             path="/articles" 
