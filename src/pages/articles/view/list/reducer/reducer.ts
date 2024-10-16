@@ -32,7 +32,7 @@ type Articlereducerinitialstate = {
 
         if(action.type === "create"){
             const updatecardlist = [...articlelist,
-                {...action.payload.cardobj ,
+                {...action.payload.cardfileds ,
                 img:"https://cdn.britannica.com/17/4717-004-6F48198E/Flag-Republic-of-Georgia.jpg",
                 id:(Number(articlelist.at(-1)?.id)+1).toString(),
                 vote:0,
@@ -40,6 +40,8 @@ type Articlereducerinitialstate = {
             }]
             return updatecardlist
         }
+
+      
 
         if (action.type === "delete") {
             const updatedCardList = articlelist.map(card => {

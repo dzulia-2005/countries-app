@@ -1,7 +1,6 @@
 import Herosection from '@/pages/articles/components/list/herosection/herosection'
-// import {article } from '@/pages/articles/static/dummy-data'
 import Card from '@/pages/articles/components/list/cardsection/card'
-import { FormEvent, lazy, useReducer, } from 'react'
+import { lazy, useReducer, } from 'react'
 import Likebutton from '../../components/list/cardsection/likecomp';
 import { Link } from 'react-router-dom';
 import Cardcreateform from '../../components/list/cardsection/card_create_form/cardcreateform';
@@ -41,21 +40,16 @@ const CardSectionview:React.FC = () => {
         dispatch({type:"sort",payload:{sorttype}})
     }
 
-    const handlecreatecard=(event:FormEvent<HTMLFormElement>)=>{
-        event.preventDefault();
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const cardobj:any = {};
-        const formdata = new FormData(event.currentTarget)
-
-        for(const[key,value] of formdata){
-            cardobj[key] = value
-        }
-
-        dispatch({type:"create",payload:{cardobj}})
+    const handlecreatecard=(cardfileds:{
+        country:string;
+        population:string;
+        capital:string
+         })=>{
+            dispatch({type:"create",payload: {cardfileds} })
     }
 
-    const handledeletecard = (e: React.MouseEvent<HTMLButtonElement>,id:string) => {
+
+    const handledeletecard = (_e: React.MouseEvent<HTMLButtonElement>,id:string) => {
         dispatch({type:"delete",payload:{id}})
     }
 
