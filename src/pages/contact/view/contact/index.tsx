@@ -8,18 +8,29 @@ const Contact: React.FC = () => {
     message: '',
   });
 
-  const [errormsg,setErrormsg] = useState<string>("")
+  const [error,setError] = useState({
+    name: '',
+    surname: '',
+    email: '',
+    message: '',
+  })
 
-  const validateinp = (value:string) => {
+  
+
+  
+
+  const validateinp = (name:string,value:string) => {
     return value.length > 8 ? 'მეტია 8-ზე!!!':""
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    console.log(`Changed ${name}: ${value}`); 
+    const { name, value } = event.target; 
     setFormData({ ...formData, [name]: value });
-    setErrormsg(validateinp(value))
+    const errorsMsg = validateinp(name,value);
+    setError({...error,[name]:errorsMsg})
   };
+
+ 
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); 
@@ -41,6 +52,7 @@ const Contact: React.FC = () => {
             onChange={handleChange}
             required
           />
+          <span>{error.name}</span>
         </div>
         <div>
             <div>
@@ -54,6 +66,7 @@ const Contact: React.FC = () => {
             onChange={handleChange}
             required
           />
+           <span>{error.surname}</span>
         </div>
         <div>
           <div>
@@ -67,6 +80,7 @@ const Contact: React.FC = () => {
             onChange={handleChange}
             required
           />
+           <span>{error.email}</span>
         </div>
         <div>
           <div>
@@ -79,9 +93,9 @@ const Contact: React.FC = () => {
             onChange={handleChange}
             required
           ></textarea>
+           <span>{error.message}</span>
         </div>
         <button type="submit">Send</button>
-        <div style={{color:"red"}}>{errormsg}</div>
       </form>
     </div>
   );
