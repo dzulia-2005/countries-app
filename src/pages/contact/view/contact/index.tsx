@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { translations } from '@/translation';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,11 +17,13 @@ const Contact: React.FC = () => {
     message: '',
   })
 
-  
+  const { lang } = useParams();
+  const t = translations[lang as keyof typeof translations];  
 
-  
+      
 
-  const validateinp = (name:string,value:string) => {
+
+  const validateinp = (_name:string,value:string) => {
     return value.length > 8 ? 'მეტია 8-ზე!!!':""
   }
 
@@ -42,7 +46,7 @@ const Contact: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div>
             <div>
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="name">{t.name}:</label>
             </div>
           <input
             type="text"
@@ -56,7 +60,7 @@ const Contact: React.FC = () => {
         </div>
         <div>
             <div>
-                 <label htmlFor="surname">Surname:</label>
+                 <label htmlFor="surname">{t.surname}:</label>
             </div>
           <input
             type="text"
@@ -70,7 +74,7 @@ const Contact: React.FC = () => {
         </div>
         <div>
           <div>
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">{t.mail}:</label>
           </div>
           <input
             type="email"
@@ -84,7 +88,7 @@ const Contact: React.FC = () => {
         </div>
         <div>
           <div>
-             <label htmlFor="message">Message:</label>
+             <label htmlFor="message">{t.message}:</label>
           </div>
           <textarea
             id="message"
@@ -95,7 +99,7 @@ const Contact: React.FC = () => {
           ></textarea>
            <span>{error.message}</span>
         </div>
-        <button type="submit">Send</button>
+        <button type="submit">{t.send}</button>
       </form>
     </div>
   );

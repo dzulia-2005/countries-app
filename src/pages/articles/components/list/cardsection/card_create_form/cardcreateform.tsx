@@ -1,4 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { translations } from '@/translation';
 
 type cardcreateformprops = {
     oncardcreate:(cardfiels:{
@@ -10,7 +12,8 @@ type cardcreateformprops = {
 
 const Cardcreateform:React.FC<cardcreateformprops> = ({oncardcreate}) => {
 
-
+  const { lang } = useParams();
+  const t = translations[lang as keyof typeof translations];
   
   const [country, setCountry] = useState<string>("");
   const [population, setPopulation] = useState<string>("");
@@ -62,7 +65,7 @@ const Cardcreateform:React.FC<cardcreateformprops> = ({oncardcreate}) => {
   return (
     <form onSubmit={handlesubmit} style={{margin: '4% 8%'}}>
 
-            <div>Country : </div>
+            <div> {t.country} : </div>
             <input style={{ display: 'block', textAlign: 'center' }}
                 name='country' 
                 value={country} 
@@ -71,7 +74,7 @@ const Cardcreateform:React.FC<cardcreateformprops> = ({oncardcreate}) => {
             <span style={{color:'red'}}>{countryError}</span>
 
 
-            <div>Population :</div>
+            <div>{t.population} :</div>
             <input style={{ display: 'block', textAlign: 'center' }} 
                 name='population' 
                 value={population} 
@@ -79,7 +82,7 @@ const Cardcreateform:React.FC<cardcreateformprops> = ({oncardcreate}) => {
             />
             <span style={{color:'red'}}>{populationError}</span>
 
-            <div>Capital :</div>
+            <div>{t.capital} :</div>
             <input style={{ display: 'block', textAlign: 'center' }} 
                 name='capital' 
                 value={capital} 
@@ -87,7 +90,7 @@ const Cardcreateform:React.FC<cardcreateformprops> = ({oncardcreate}) => {
             />  
             <span style={{color:'red'}}>{capitalError}</span>
            
-        <button>Create card</button>
+        <button>{t.createcard}</button>
     </form>
   )
 }

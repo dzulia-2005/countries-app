@@ -1,36 +1,48 @@
-import React from "react"
-import styles from '@/component/header/header.module.css'
-import { NavLink } from "react-router-dom"
+import React from "react";
+import styles from '@/component/header/header.module.css';
+import {NavLink,  useParams } from "react-router-dom";
+import { translations } from "@/translation";
 
-const Header:React.FC = ()=>{
+const Header: React.FC = () => {
+  const { lang } = useParams<{ lang: string }>();
 
-  const handleactivenav = (isActive:boolean)=>{
 
-    return  isActive ? styles.activerightnav : styles.rightnav
+  const handleActiveNav = (isActive: boolean) => {
+    return isActive ? styles.activerightnav : styles.rightnav;
+  };
 
-    }
 
-    return (
-        <header>
-          <div className={styles.header_div}>
-            <div>
-              <NavLink to='/' className={({isActive})=>
-                handleactivenav(isActive)}>WORLD COUNTRIES! </NavLink>
-            </div>
 
-            <nav className={styles.right_header}>
-              <NavLink to="/articles" className={({isActive})=>
-               handleactivenav(isActive)}>Articles</NavLink>
+  
+  const t = translations[lang as keyof typeof translations];
 
-              <NavLink to='/about' className={({isActive})=>
-                  handleactivenav(isActive)}>About</NavLink>
-              
-              <NavLink to="/contact" className={({isActive})=>
-                handleactivenav(isActive)}>CONTACT</NavLink>
-            </nav>
-           </div>
-        </header>
-    )
-}
+  return (
+    <header>
+      <div className={styles.header_div}>
+        <div>
+          <NavLink to={`/${lang}`} className={({ isActive }) => handleActiveNav(isActive)}>
+            {t.title}
+          </NavLink>
+        </div>
+
+        <nav className={styles.right_header}>
+          <NavLink to={`/${lang}/articles`} className={({ isActive }) => handleActiveNav(isActive)}>
+            {t.articles}
+          </NavLink>
+          <NavLink to={`/${lang}/about`} className={({ isActive }) => handleActiveNav(isActive)}>
+           { t.about}
+          </NavLink>
+          <NavLink to={`/${lang}/contact`} className={({ isActive }) => handleActiveNav(isActive)}>
+            {t.contact}
+          </NavLink>
+
+          <NavLink to={`/${lang === 'en' ? 'ka' : 'en'}/articles`} className={({ isActive }) => handleActiveNav(isActive)}>
+            ქარ/eng
+          </NavLink>
+        </nav>
+      </div>
+    </header>
+  );
+};
 
 export default Header;
