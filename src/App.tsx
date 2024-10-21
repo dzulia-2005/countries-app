@@ -59,7 +59,7 @@ function App() {
           />
         </Route>
         
-        <Route path="/" element={<Navigate to="/eng/articles" />} />
+        <Route path="/" element={<Navigate to="/en/articles" />} />
         <Route path="*" element={ <div>Not found page</div>} />
       </Routes>
     </BrowserRouter>
