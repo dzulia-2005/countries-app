@@ -1,6 +1,6 @@
 import React from "react";
 import styles from '@/component/header/header.module.css';
-import {NavLink,  useParams } from "react-router-dom";
+import {NavLink,  useLocation,  useNavigate,  useParams } from "react-router-dom";
 import { translations } from "@/translation";
 
 const Header: React.FC = () => {
@@ -11,7 +11,13 @@ const Header: React.FC = () => {
     return isActive ? styles.activerightnav : styles.rightnav;
   };
 
+const navigate = useNavigate();
+const location = useLocation();
 
+  const changelanguage = (newLang: string) => {
+    const currentpath = location.pathname.split('/').slice(2).join('/');
+    navigate(`/${newLang}/${currentpath}`)
+  }
 
   
   const t = translations[lang as keyof typeof translations];
@@ -35,10 +41,8 @@ const Header: React.FC = () => {
           <NavLink to={`/${lang}/contact`} className={({ isActive }) => handleActiveNav(isActive)}>
             {t.contact}
           </NavLink>
-
-          <NavLink to={`/${lang === 'en' ? 'ka' : 'en'}/articles`} className={({ isActive }) => handleActiveNav(isActive)}>
-            ქარ/eng
-          </NavLink>
+          <button onClick={()=>changelanguage('en')}>en</button>
+          <button onClick={()=>changelanguage('ka')}>ge</button>
         </nav>
       </div>
     </header>

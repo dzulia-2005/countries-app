@@ -5,6 +5,7 @@ type Articlereducerinitialstate = {
         capital: string;
         id:string;
         vote:number;
+
     }[];
 
 
@@ -30,16 +31,19 @@ type Articlereducerinitialstate = {
                return sortbyasc
         }
 
-        if(action.type === "create"){
-            const updatecardlist = [...articlelist,
-                {...action.payload.cardfileds ,
-                img:"https://cdn.britannica.com/17/4717-004-6F48198E/Flag-Republic-of-Georgia.jpg",
-                id:(Number(articlelist.at(-1)?.id)+1).toString(),
-                vote:0,
-    
-            }]
-            return updatecardlist
+        if (action.type === "create") {
+            const updatecardlist = [
+                ...articlelist,
+                {
+                    ...action.payload.cardfields,
+                    id: (Number(articlelist.at(-1)?.id) + 1).toString(),
+                    vote: 0,
+                    img: action.payload.cardfields.image, 
+                },
+            ];
+            return updatecardlist;
         }
+        
 
       
 

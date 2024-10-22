@@ -66,7 +66,7 @@ const CardSectionview: React.FC = () => {
     return (
         <>
             <Herosection />
-            <Cardcreateform oncardcreate={handlecreatecard} />
+            <Cardcreateform onCardCreate={handlecreatecard} />
             <button style={{ margin: '2% 8%' }} onClick={() => handlecardsortbylike("asc")}>
                 {t.ascending}
             </button>
@@ -82,11 +82,11 @@ const CardSectionview: React.FC = () => {
                         <img style={{ width: '36%', height: '150px' }} src={item.img} alt={item.country} />
                         <LazyCardinfo>
                             <LazyCardTitle>
-                                country: {item.country}
+                                {t.country}: {item.country}
                             </LazyCardTitle>
                             <LazyCardDescription>
-                                <LazyCardpop>Population: {item.population}</LazyCardpop>
-                                <LazyCardCapital>Capital: {item.capital}</LazyCardCapital>
+                                <LazyCardpop>{t.population}: {item.population}</LazyCardpop>
+                                <LazyCardCapital>{t.capital}: {item.capital}</LazyCardCapital>
                             </LazyCardDescription>
                         </LazyCardinfo>
                         <Likebutton

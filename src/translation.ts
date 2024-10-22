@@ -20,6 +20,7 @@ export const translations = {
       mail:"Mail",
       message:"Message",
       send: "Send",
+      
     },
     ka: {
       title: 'მსოფლიო ქვეყნები!',

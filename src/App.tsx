@@ -1,5 +1,5 @@
 import '@/App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
 const LazyCardSectionview = lazy(() => import('@/pages/articles/view/list/index'));
@@ -8,10 +8,12 @@ const LazyDefaultlayout = lazy(() => import('@/layouts/default/defaultlayout'));
 const LazyContactInformation = lazy(() => import('@/pages/contact/view/contact/index'));
 const LazyCountryDetail = lazy(() => import('@/pages/CountryDetailpage/CountryDetail'));
 
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+       
         <Route path="/:lang" element={<LazyDefaultlayout />}>
           <Route 
             path="articles" 
@@ -59,7 +61,7 @@ function App() {
           />
         </Route>
         
-        <Route path="/" element={<Navigate to="/eng/articles" />} />
+        <Route path="/" element={<Navigate to="/en/articles" />} />
         <Route path="*" element={ <div>Not found page</div>} />
       </Routes>
     </BrowserRouter>
