@@ -25,6 +25,8 @@ const CardCreateForm: React.FC<CardCreateFormProps> = ({ onCardCreate }) => {
     const [populationError, setPopulationError] = useState<string>('');
     const [capitalError, setCapitalError] = useState<string>('');
 
+    const [activeTab, setActiveTab] = useState<string>('ge'); // 'ge' - ქართული, 'en' - ინგლისური
+
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -67,62 +69,64 @@ const CardCreateForm: React.FC<CardCreateFormProps> = ({ onCardCreate }) => {
     };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (!image) {
-          setImgErr("image is required");
-          return;
-      }
-  
-      onCardCreate({
-          country,
-          population,
-          capital,
-          image, 
-      });
-  };
-  
+        e.preventDefault();
+        if (!image) {
+            setImgErr("image is required");
+            return;
+        }
+
+        onCardCreate({
+            country,
+            population,
+            capital,
+            image, 
+        });
+    };
 
     return (
-        <form onSubmit={handleSubmit} style={{ margin: '4% 8%' }}>
-           
-            <input
-                style={{ display: 'block', textAlign: 'center' }}
-                name='country'
-                value={country}
-                onChange={handleChangeCountry}
-                placeholder='country'
-            />
-            <span style={{ color: 'red' }}>{countryError}</span>
-
-            
-            <input
-                style={{ display: 'block', textAlign: 'center' }}
-                name='population'
-                value={population}
-                onChange={handleChangePopulation}
-                placeholder='population'
-            />
-            <span style={{ color: 'red' }}>{populationError}</span>
-
-            
-            <input
-                style={{ display: 'block', textAlign: 'center' }}
-                name='capital'
-                value={capital}
-                onChange={handleChangeCapital}
-                placeholder='capital'
-            />
-            <span style={{ color: 'red' }}>{capitalError}</span>
-
-            <div>
-                <input type="file" accept='.jpeg, .png, .jpg' onChange={handleFileChange} />
-                <span style={{ color: 'red' }}>{imgErr}</span>
+        <div style={{ margin: '4% 8%' }}>
+            <div style={{marginBottom: "10px"}}>
+                <button style={{marginRight:"5px",background: "none", border: "none", cursor:"pointer"}} onClick={() => setActiveTab('ge')}>ქართული</button>
+                <button style={{background: "none", border: "none", cursor:"pointer"}} onClick={() => setActiveTab('en')}>English</button>
             </div>
+            <form onSubmit={handleSubmit}>
+                <input
+                    style={{ display: 'block', textAlign: 'center' }}
+                    name='country'
+                    value={country}
+                    onChange={handleChangeCountry}
+                    placeholder={activeTab === 'ge' ? 'ქვეყანა' : 'Country'}
+                />
+                <span style={{ color: 'red' }}>{countryError}</span>
 
-            {image && <img src={image} alt="Uploaded" style={{ width: '100px', height: '100px' }} />}
+                <input
+                    style={{ display: 'block', textAlign: 'center' }}
+                    name='population'
+                    value={population}
+                    onChange={handleChangePopulation}
+                    placeholder={activeTab === 'ge' ? 'მოსახლება' : 'Population'}
+                />
+                <span style={{ color: 'red' }}>{populationError}</span>
 
-            <button>{t.createcard}</button>
-        </form>
+                <input
+                    style={{ display: 'block', textAlign: 'center' }}
+                    name='capital'
+                    value={capital}
+                    onChange={handleChangeCapital}
+                    placeholder={activeTab === 'ge' ? 'დედაქალაქი' : 'Capital'}
+                />
+                <span style={{ color: 'red' }}>{capitalError}</span>
+
+                <div>
+                    <input type="file" accept='.jpeg, .png, .jpg' onChange={handleFileChange} />
+                    <span style={{ color: 'red' }}>{imgErr}</span>
+                </div>
+
+                {image && <img src={image} alt="Uploaded" style={{ width: '100px', height: '100px' }} />}
+
+                <button>{t.createcard}</button>
+            </form>
+        </div>
     );
 };
 
