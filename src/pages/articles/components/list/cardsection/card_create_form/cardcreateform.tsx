@@ -11,21 +11,37 @@ type CardCreateFormProps = {
     }) => void;
 };
 
+type FormFields = {
+    ge: {
+        country: string;
+        population: string;
+        capital: string;
+    };
+    en: {
+        country: string;
+        population: string;
+        capital: string;
+    };
+};
+
 const CardCreateForm: React.FC<CardCreateFormProps> = ({ onCardCreate }) => {
     const { lang } = useParams();
     const t = translations[lang as keyof typeof translations];
 
-    const [country, setCountry] = useState<string>("");
-    const [population, setPopulation] = useState<string>("");
-    const [capital, setCapital] = useState<string>("");
+    const [formFields, setFormFields] = useState<FormFields>({
+        ge: { country: '', population: '', capital: '' },
+        en: { country: '', population: '', capital: '' }
+    });
+
     const [image, setImage] = useState<string | null>(null);
     const [imgErr, setImgErr] = useState<string>("");
 
-    const [countryError, setCountryError] = useState<string>('');
-    const [populationError, setPopulationError] = useState<string>('');
-    const [capitalError, setCapitalError] = useState<string>('');
+    const [errors, setErrors] = useState({
+        ge: { countryError: '', populationError: '', capitalError: '' },
+        en: { countryError: '', populationError: '', capitalError: '' }
+    });
 
-    const [activeTab, setActiveTab] = useState<string>('ge'); // 'ge' - ქართული, 'en' - ინგლისური
+    const [activeTab, setActiveTab] = useState<'ge' | 'en'>('ge'); // 'ge' - ქართული, 'en' - ინგლისური
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -50,22 +66,22 @@ const CardCreateForm: React.FC<CardCreateFormProps> = ({ onCardCreate }) => {
         return value.length > 8 ? "მეტია 8-ზე" : '';
     };
 
-    const handleChangeCountry = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (field: 'country' | 'population' | 'capital') => (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setCountry(value);
-        setCountryError(validateInput(value));
-    };
-
-    const handleChangePopulation = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setPopulation(value);
-        setPopulationError(validateInput(value));
-    };
-
-    const handleChangeCapital = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setCapital(value);
-        setCapitalError(validateInput(value));
+        setFormFields(prev => ({
+            ...prev,
+            [activeTab]: {
+                ...prev[activeTab],
+                [field]: value
+            }
+        }));
+        setErrors(prev => ({
+            ...prev,
+            [activeTab]: {
+                ...prev[activeTab],
+                [`${field}Error`]: validateInput(value)
+            }
+        }));
     };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -76,46 +92,46 @@ const CardCreateForm: React.FC<CardCreateFormProps> = ({ onCardCreate }) => {
         }
 
         onCardCreate({
-            country,
-            population,
-            capital,
-            image, 
+            country: formFields[activeTab].country,
+            population: formFields[activeTab].population,
+            capital: formFields[activeTab].capital,
+            image,
         });
     };
 
     return (
         <div style={{ margin: '4% 8%' }}>
-            <div style={{marginBottom: "10px"}}>
-                <button style={{marginRight:"5px",background: "none", border: "none", cursor:"pointer"}} onClick={() => setActiveTab('ge')}>ქართული</button>
-                <button style={{background: "none", border: "none", cursor:"pointer"}} onClick={() => setActiveTab('en')}>English</button>
+            <div style={{ marginBottom: "10px" }}>
+                <button style={{ marginRight: "5px", background: "none", border: "none", cursor: "pointer" }} onClick={() => setActiveTab('ge')}>ქართული</button>
+                <button style={{ background: "none", border: "none", cursor: "pointer" }} onClick={() => setActiveTab('en')}>English</button>
             </div>
             <form onSubmit={handleSubmit}>
                 <input
                     style={{ display: 'block', textAlign: 'center' }}
                     name='country'
-                    value={country}
-                    onChange={handleChangeCountry}
+                    value={formFields[activeTab].country}
+                    onChange={handleChange('country')}
                     placeholder={activeTab === 'ge' ? 'ქვეყანა' : 'Country'}
                 />
-                <span style={{ color: 'red' }}>{countryError}</span>
+                <span style={{ color: 'red' }}>{errors[activeTab].countryError}</span>
 
                 <input
                     style={{ display: 'block', textAlign: 'center' }}
                     name='population'
-                    value={population}
-                    onChange={handleChangePopulation}
-                    placeholder={activeTab === 'ge' ? 'მოსახლება' : 'Population'}
+                    value={formFields[activeTab].population}
+                    onChange={handleChange('population')}
+                    placeholder={activeTab === 'ge' ? 'მოსახლეობა' : 'Population'}
                 />
-                <span style={{ color: 'red' }}>{populationError}</span>
+                <span style={{ color: 'red' }}>{errors[activeTab].populationError}</span>
 
                 <input
                     style={{ display: 'block', textAlign: 'center' }}
                     name='capital'
-                    value={capital}
-                    onChange={handleChangeCapital}
+                    value={formFields[activeTab].capital}
+                    onChange={handleChange('capital')}
                     placeholder={activeTab === 'ge' ? 'დედაქალაქი' : 'Capital'}
                 />
-                <span style={{ color: 'red' }}>{capitalError}</span>
+                <span style={{ color: 'red' }}>{errors[activeTab].capitalError}</span>
 
                 <div>
                     <input type="file" accept='.jpeg, .png, .jpg' onChange={handleFileChange} />

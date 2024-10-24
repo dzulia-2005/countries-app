@@ -21,6 +21,7 @@ export const translations = {
       message:"Message",
       send: "Send",
       
+      
     },
     ka: {
       title: 'მსოფლიო ქვეყნები!',
@@ -46,4 +47,7 @@ export const translations = {
 
     }
   };
+  
+
+
   
