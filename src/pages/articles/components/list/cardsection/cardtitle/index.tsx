@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const CardTitle:React.FC<React.PropsWithChildren>=({children}) => {
-  return (
-    <div>{children}</div>
-  )
-}
+const CardTitle: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return <div>{children}</div>;
+};
 
-export default CardTitle
+export default CardTitle;
