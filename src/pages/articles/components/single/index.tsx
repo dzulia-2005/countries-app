@@ -1,8 +1,5 @@
-
 function Singlelearticle() {
-  return (
-    <div>article found</div>
-  )
+  return <div>article found</div>;
 }
 
-export default Singlelearticle
+export default Singlelearticle;
