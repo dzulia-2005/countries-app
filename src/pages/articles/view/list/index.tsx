@@ -7,6 +7,7 @@ import Cardcreateform from "../../components/list/cardsection/card_create_form/c
 import { cardreducer } from "./reducer/reducer";
 import { cardinitialstate } from "./reducer/state";
 import { translations } from "@/translation";
+import OTPinput from "../../components/list/cardsection/otp-input/otp";
 
 const LazyCardlist = lazy(
   () => import("@/pages/articles/components/list/cardsection/cardlist/index"),
@@ -151,7 +152,9 @@ const CardSectionview: React.FC = () => {
               </button>
             )}
           </Card>
+          
         ))}
+        <OTPinput length={4}/>
       </LazyCardlist>
     </>
   );
