@@ -12,9 +12,7 @@ const LazyDefaultlayout = lazy(() => import("@/layouts/default/defaultlayout"));
 const LazyContactInformation = lazy(
   () => import("@/pages/contact/view/contact/index"),
 );
-const LazyCountryDetail = lazy(
-  () => import("@/pages/CountryDetailpage/CountryDetail"),
-);
+
 
 function App() {
   return (
@@ -34,19 +32,11 @@ function App() {
             path="articles/:id"
             element={
               <Suspense fallback={<div>Loading Article Detail...</div>}>
-                <LazyCountryDetail />
               </Suspense>
             }
           />
 
-          <Route
-            path="articles/:id/country"
-            element={
-              <Suspense fallback={<div>Loading Country Detail...</div>}>
-                <LazyCountryDetail />
-              </Suspense>
-            }
-          />
+          
 
           <Route
             path="about"
