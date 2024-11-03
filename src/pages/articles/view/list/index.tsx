@@ -198,7 +198,7 @@ const CardSectionview: React.FC = () => {
               <input 
                   type="text" 
                   value={editingCountry.img}
-                  onChange={(e) => setEditingCountry({...editingCountry, img: e.target.value})} // გამოვიყენოთ 'e'
+                  onChange={(e) => setEditingCountry({...editingCountry, img: e.target.value})} 
                 />
                 <button onClick={handleEditCountry}>Save</button>
             </div>
