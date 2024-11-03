@@ -4,8 +4,6 @@ interface OTPInputProps {
   length: number;
 }
 
-
-
 const OTPInput: React.FC<OTPInputProps> = ({ length }) => {
   const [inputs, setInputs] = useState(Array(length).fill(""));
   const inputRef = useRef<Array<HTMLInputElement | null>>([]);
@@ -14,8 +12,6 @@ const OTPInput: React.FC<OTPInputProps> = ({ length }) => {
     event: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
-
-   
     const value = event.target.value.replace(/\D/g, "");
     const newInputs = [...inputs];
     newInputs[index] = value;
@@ -56,7 +52,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ length }) => {
   };
 
   return (
-    <div style={{ display: "flex", gap: 8 , marginTop : '20px'}}>
+    <div style={{ display: "flex", gap: 8, marginTop: "20px" }}>
       {inputs.map((value, index) => (
         <input
           key={index}
