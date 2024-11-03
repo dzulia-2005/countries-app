@@ -13,7 +13,6 @@ const LazyContactInformation = lazy(
   () => import("@/pages/contact/view/contact/index"),
 );
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -31,12 +30,11 @@ function App() {
           <Route
             path="articles/:id"
             element={
-              <Suspense fallback={<div>Loading Article Detail...</div>}>
-              </Suspense>
+              <Suspense
+                fallback={<div>Loading Article Detail...</div>}
+              ></Suspense>
             }
           />
-
-          
 
           <Route
             path="about"

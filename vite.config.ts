@@ -11,10 +11,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/countries': {
-        target: 'http://localhost:3000',
+      "/countries": {
+        target: "http://localhost:3000",
         changeOrigin: true,
       },
     },
-  }
+  },
 });
