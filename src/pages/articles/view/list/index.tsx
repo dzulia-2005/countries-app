@@ -1,27 +1,16 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import Herosection from "@/pages/articles/components/list/herosection/herosection";
 import OTPinput from "../../components/list/cardsection/otp-input/otp";
 import Card from "../../components/list/cardsection/card";
-import axios from "axios";
+import { AddCountries, DeleteCountries, getCountries, UpdateCountries } from "@/api/countries";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const LazyCardlist = lazy(
-  () => import("@/pages/articles/components/list/cardsection/cardlist/index"),
-);
-const LazyCardinfo = lazy(
-  () => import("@/pages/articles/components/list/cardsection/cardinfo/index"),
-);
-const LazyCardTitle = lazy(
-  () => import("@/pages/articles/components/list/cardsection/cardtitle"),
-);
-const LazyCardDescription = lazy(
-  () => import("@/pages/articles/components/list/cardsection/carddescription"),
-);
-const LazyCardpop = lazy(
-  () => import("@/pages/articles/components/list/cardsection/cardpop"),
-);
-const LazyCardCapital = lazy(
-  () => import("@/pages/articles/components/list/cardsection/cardcapital"),
-);
+const LazyCardlist = lazy(() => import("@/pages/articles/components/list/cardsection/cardlist/index"));
+const LazyCardinfo = lazy(() => import("@/pages/articles/components/list/cardsection/cardinfo/index"));
+const LazyCardTitle = lazy(() => import("@/pages/articles/components/list/cardsection/cardtitle"));
+const LazyCardDescription = lazy(() => import("@/pages/articles/components/list/cardsection/carddescription"));
+const LazyCardpop = lazy(() => import("@/pages/articles/components/list/cardsection/cardpop"));
+const LazyCardCapital = lazy(() => import("@/pages/articles/components/list/cardsection/cardcapital"));
 
 type CountryProp = {
   id: string;
@@ -32,57 +21,52 @@ type CountryProp = {
 };
 
 const CardSectionview: React.FC = () => {
-  const [countries, setCountries] = useState<CountryProp[]>([]);
   const [newCountry, setNewCountry] = useState<Partial<CountryProp>>({});
-  const [editingCountry, setEditingCountry] = useState<CountryProp | null>(
-    null,
-  );
+  const [editingCountry, setEditingCountry] = useState<CountryProp | null>(null);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    axios
-      .get("/countries")
-      .then((res) => {
-        console.log("API Response:", res.data);
-        if (Array.isArray(res.data)) {
-          setCountries(res.data);
-        } else {
-          console.error("Expected an array but got:", res.data);
-        }
-      })
-      .catch((err) => console.log("Error:", err));
-  }, []);
+
+  const { data: countries, isLoading, isError } = useQuery({
+    queryKey: ["countries-list"],
+    queryFn: getCountries,
+  });
+
+  
+  const addCountryMutation = useMutation<CountryProp, Error, Partial<CountryProp>>({
+    mutationFn: (newCountry: Partial<CountryProp>) => AddCountries(newCountry),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["countries-list"] });
+    },
+  });
+  
+  const updateCountryMutation = useMutation<CountryProp, Error, CountryProp>({
+    mutationFn: (country: CountryProp) => UpdateCountries(country),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["countries-list"] });
+    },
+  });
+  
+
+  
+  const deleteCountryMutation = useMutation<void,Error,string | number>({
+    mutationFn:(id:string| number)=>DeleteCountries(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey : ["countries-list"]});
+    },
+  });
 
   const handleAddCountry = async () => {
-    try {
-      const response = await axios.post("/countries", newCountry);
-      setCountries([...countries, response.data]);
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    await addCountryMutation.mutateAsync(newCountry);
   };
 
   const handleDeleteCountry = async (id: string) => {
-    try {
-      await axios.delete(`/countries/${id}`);
-      setCountries(countries.filter((country) => country.id !== id));
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    await deleteCountryMutation.mutateAsync(id);
   };
 
   const handleEditCountry = async () => {
     if (editingCountry) {
-      try {
-        await axios.put(`/countries/${editingCountry.id}`, editingCountry);
-        setCountries(
-          countries.map((country) =>
-            country.id === editingCountry.id ? editingCountry : country,
-          ),
-        );
-        setEditingCountry(null);
-      } catch (error) {
-        console.log("Error:", error);
-      }
+      await updateCountryMutation.mutateAsync(editingCountry);
+      setEditingCountry(null);
     }
   };
 
@@ -100,6 +84,35 @@ const CardSectionview: React.FC = () => {
   return (
     <>
       <Herosection />
+
+      {editingCountry && (
+            <div>
+              <h3>Edit Country</h3>
+              <input
+                type="text"
+                value={editingCountry.country}
+                onChange={(e) => setEditingCountry({ ...editingCountry, country: e.target.value })}
+              />
+              <input
+                type="text"
+                value={editingCountry.capital}
+                onChange={(e) => setEditingCountry({ ...editingCountry, capital: e.target.value })}
+              />
+              <input
+                type="text"
+                value={editingCountry.population}
+                onChange={(e) => setEditingCountry({ ...editingCountry, population: e.target.value })}
+              />
+              <input
+                type="text"
+                value={editingCountry.img}
+                onChange={(e) => setEditingCountry({ ...editingCountry, img: e.target.value })}
+              />
+             <button onClick={handleEditCountry} disabled={updateCountryMutation.status === "pending"}>
+                {updateCountryMutation.status === "pending" ? "Saving..." : "Save"}
+             </button>
+            </div>
+          )} 
       <Suspense fallback={<div>Loading...</div>}>
         <div style={{ marginLeft: "8%" }}>
           <h3>Add Card:</h3>
@@ -107,102 +120,50 @@ const CardSectionview: React.FC = () => {
             <input
               type="text"
               placeholder="Country"
-              onChange={(e) =>
-                setNewCountry({ ...newCountry, country: e.target.value })
-              }
+              onChange={(e) => setNewCountry({ ...newCountry, country: e.target.value })}
             />
           </div>
           <div>
             <input
               type="text"
               placeholder="Capital"
-              onChange={(e) =>
-                setNewCountry({ ...newCountry, capital: e.target.value })
-              }
+              onChange={(e) => setNewCountry({ ...newCountry, capital: e.target.value })}
             />
           </div>
           <div>
             <input
               type="text"
               placeholder="Population"
-              onChange={(e) =>
-                setNewCountry({ ...newCountry, population: e.target.value })
-              }
+              onChange={(e) => setNewCountry({ ...newCountry, population: e.target.value })}
             />
           </div>
           <div>
             <input type="file" onChange={handleUploadImage} />
           </div>
-          <button onClick={handleAddCountry}>Add Card</button>
+          <button onClick={handleAddCountry} disabled={addCountryMutation.status === "pending"} >
+              {addCountryMutation.status === "pending" ? "Adding..." : "Add Card"}
+          </button>
         </div>
 
         <LazyCardlist>
-          {countries.map((item) => (
+          {isLoading && <p>Loading...</p>}
+          {isError && <p>Error loading countries</p>}
+          {countries?.map((item) => (
             <Card key={item.id}>
-              <img
-                src={item.img}
-                style={{ width: "30%", margin: "0 5% 0 0" }}
-              />
+              <img src={item.img} style={{ width: "30%", margin: "0 5% 0 0" }} />
               <LazyCardinfo>
-                <LazyCardTitle> Country : {item.country}</LazyCardTitle>
+                <LazyCardTitle>Country: {item.country}</LazyCardTitle>
                 <LazyCardDescription>
-                  <LazyCardpop>Capital : {item.capital}</LazyCardpop>
-                  <LazyCardCapital>
-                    Population : {item.population}
-                  </LazyCardCapital>
+                  <LazyCardpop>Capital: {item.capital}</LazyCardpop>
+                  <LazyCardCapital>Population: {item.population}</LazyCardCapital>
                 </LazyCardDescription>
               </LazyCardinfo>
-              <button
-                onClick={() => handleDeleteCountry(item.id)}
-                style={{ margin: "0% 5%" }}
-              >
+              <button onClick={() => handleDeleteCountry(item.id)} style={{ margin: "0% 5%" }}>
                 Delete
               </button>
               <button onClick={() => setEditingCountry(item)}>Edit</button>
             </Card>
-          ))}
-
-          {editingCountry && (
-            <div>
-              <h3>Edit Country</h3>
-              <input
-                type="text"
-                value={editingCountry.country}
-                onChange={(e) =>
-                  setEditingCountry({
-                    ...editingCountry,
-                    country: e.target.value,
-                  })
-                }
-              />
-              <input
-                type="text"
-                value={editingCountry.capital}
-                onChange={(e) =>
-                  setEditingCountry({
-                    ...editingCountry,
-                    capital: e.target.value,
-                  })
-                }
-              />
-              <input
-                type="text"
-                value={editingCountry.population}
-                onChange={(e) =>
-                  setEditingCountry({
-                    ...editingCountry,
-                    population: e.target.value,
-                  })
-                }
-              />
-              <input 
-                  type="text" 
-                  value={editingCountry.img}
-                  onChange={(e) => setEditingCountry({...editingCountry, img: e.target.value})} // გამოვიყენოთ 'e'
-                />
-                <button onClick={handleEditCountry}>Save</button>
-            </div>
-          )}
+           ))}
           <OTPinput length={4} />
         </LazyCardlist>
       </Suspense>
