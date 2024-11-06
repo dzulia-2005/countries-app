@@ -151,57 +151,74 @@ const CardSectionview: React.FC = () => {
         </div>
       )}
       <Suspense fallback={<div>Loading...</div>}>
-          <div style={{ marginLeft: "8%" }}>
-            <h3>Add Card:</h3>
-            <div>
-              <input
-                type="text"
-                placeholder="Country"
-                onChange={(e) => setNewCountry({ ...newCountry, country: e.target.value })}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="Capital"
-                onChange={(e) => setNewCountry({ ...newCountry, capital: e.target.value })}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="Population"
-                onChange={(e) => setNewCountry({ ...newCountry, population: e.target.value })}
-              />
-            </div>
-            <div>
-              <input type="file" onChange={handleUploadImage} />
-            </div>
-            <button onClick={handleAddCountry} disabled={addCountryMutation.status === "pending"} >
-              {addCountryMutation.status === "pending" ? "Adding..." : "Add Card"}
-            </button>
+        <div style={{ marginLeft: "8%" }}>
+          <h3>Add Card:</h3>
+          <div>
+            <input
+              type="text"
+              placeholder="Country"
+              onChange={(e) =>
+                setNewCountry({ ...newCountry, country: e.target.value })
+              }
+            />
           </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Capital"
+              onChange={(e) =>
+                setNewCountry({ ...newCountry, capital: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Population"
+              onChange={(e) =>
+                setNewCountry({ ...newCountry, population: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <input type="file" onChange={handleUploadImage} />
+          </div>
+          <button
+            onClick={handleAddCountry}
+            disabled={addCountryMutation.status === "pending"}
+          >
+            {addCountryMutation.status === "pending" ? "Adding..." : "Add Card"}
+          </button>
+        </div>
 
-          <LazyCardlist>
-            {isLoading && <p>Loading...</p>}
-            {isError && <p>Error loading countries</p>}
-            {countries?.map((item) => (
-              <Card key={item.id}>
-                <img src={item.img} style={{ width: "30%", margin: "0 5% 0 0" }} />
-                <LazyCardinfo>
-                  <LazyCardTitle>Country: {item.country}</LazyCardTitle>
-                  <LazyCardDescription>
-                    <LazyCardpop>Capital: {item.capital}</LazyCardpop>
-                    <LazyCardCapital>Population: {item.population}</LazyCardCapital>
-                  </LazyCardDescription>
-                </LazyCardinfo>
-                <button onClick={() => handleDeleteCountry(item.id)} style={{ margin: "0% 5%" }}>
-                  Delete
-                </button>
-                <button onClick={() => setEditingCountry(item)}>Edit</button>
-              </Card>
-            ))}
-          </LazyCardlist>
+        <LazyCardlist>
+          {isLoading && <p>Loading...</p>}
+          {isError && <p>Error loading countries</p>}
+          {countries?.map((item) => (
+            <Card key={item.id}>
+              <img
+                src={item.img}
+                style={{ width: "30%", margin: "0 5% 0 0" }}
+              />
+              <LazyCardinfo>
+                <LazyCardTitle>Country: {item.country}</LazyCardTitle>
+                <LazyCardDescription>
+                  <LazyCardpop>Capital: {item.capital}</LazyCardpop>
+                  <LazyCardCapital>
+                    Population: {item.population}
+                  </LazyCardCapital>
+                </LazyCardDescription>
+              </LazyCardinfo>
+              <button
+                onClick={() => handleDeleteCountry(item.id)}
+                style={{ margin: "0% 5%" }}
+              >
+                Delete
+              </button>
+              <button onClick={() => setEditingCountry(item)}>Edit</button>
+            </Card>
+          ))}
+        </LazyCardlist>
       </Suspense>
       <OTPinput length={4} />
     </>
