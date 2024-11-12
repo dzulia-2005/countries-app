@@ -1,6 +1,7 @@
 import { httpClient } from "../../api/index";
 
 export type CountryProp = {
+  likes: number;
   id: string;
   country: string;
   population: string;
@@ -8,13 +9,27 @@ export type CountryProp = {
   img: string;
 };
 
-export const getCountries = async (): Promise<CountryProp[]> => {
+export const getCountries = async (sort: string): Promise<CountryProp[]> => {
   try {
-    const res = await httpClient.get("/countries");
+    const isDescending = sort.startsWith('-'); 
+    const sortField = isDescending ? sort.substring(1) : sort;
+    const order = isDescending ? 'desc' : 'asc';
+    
+    const res = await httpClient.get(`/countries?_sort=${sortField}&_order=${order}`);
+    return res.data; 
+  } catch (error) {
+    console.log("Error fetching countries:", error);
+    return [];
+  }
+};
+
+export const getCountryById = async (id: string) => {
+  try {
+    const res = await httpClient.get(`/countries/${id}`);
     return res.data;
   } catch (error) {
     console.log("error is : ", error);
-    return [];
+    throw error;
   }
 };
 
@@ -47,5 +62,6 @@ export const DeleteCountries = async (id: string | number): Promise<void> => {
     await httpClient.delete(`/countries/${id}`);
   } catch (error) {
     console.log("error :", error);
+    throw error;
   }
 };

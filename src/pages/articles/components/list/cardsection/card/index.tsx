@@ -1,8 +1,17 @@
-import React from "react";
-import style from "@/pages/articles/components/list/cardsection/card/styles.module.css";
+import React, { ReactNode } from "react";
+import styles from "./styles.module.css";  // Import the CSS module
 
-const Card: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <div className={style.cards}>{children}</div>;
+type CardProps = {
+  children: ReactNode;
+  style?: React.CSSProperties;
+};
+
+const Card: React.FC<CardProps> = ({ children, style }) => {
+  return (
+    <div className={`${styles.card}`} style={{ ...style }}>
+      {children}
+    </div>
+  );
 };
 
 export default Card;

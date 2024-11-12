@@ -1,6 +1,7 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import CountryDetail from "./pages/articles/components/list/cardsection/moreinfo";
 
 const LazyCardSectionview = lazy(
   () => import("@/pages/articles/view/list/index"),
@@ -27,14 +28,14 @@ function App() {
             }
           />
 
-          <Route
-            path="articles/:id"
-            element={
-              <Suspense
-                fallback={<div>Loading Article Detail...</div>}
-              ></Suspense>
-            }
-          />
+        <Route
+          path="/:lang/articles/:id"
+          element={
+            <Suspense fallback={<div>Loading Article Detail...</div>}>
+              <CountryDetail />
+            </Suspense>
+          }
+        />
 
           <Route
             path="about"

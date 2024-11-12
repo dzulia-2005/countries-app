@@ -52,7 +52,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ length }) => {
   };
 
   return (
-    <div style={{ display: "flex", gap: 8, marginTop: "20px" }}>
+    <div style={{ display: "flex", gap: 8, margin: "0 0 0 8%" }}>
       {inputs.map((value, index) => (
         <input
           key={index}
