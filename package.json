@@ -21,12 +21,14 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.19",
+    "@tanstack/react-query-devtools": "^5.59.20",
     "axios": "^1.7.7",
     "browser-image-compression": "^2.0.2",
     "json-server": "^1.0.0-beta.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
+    "react-window": "^1.8.10",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "@types/node": "^22.7.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/react-window": "^1.8.8",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.13.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
