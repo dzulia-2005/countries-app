@@ -10,7 +10,7 @@ import {
 } from "@/api/countries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { FixedSizeList as List } from 'react-window';
+import { FixedSizeList as List } from "react-window";
 
 const LazyCardlist = lazy(
   () => import("@/pages/articles/components/list/cardsection/cardlist/index"),
@@ -37,7 +37,7 @@ type CountryProp = {
   population: string;
   capital: string;
   img: string;
-  likes: number; 
+  likes: number;
 };
 
 const CardSectionview: React.FC = () => {
@@ -50,17 +50,19 @@ const CardSectionview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   console.log("Country ID:", id);
 
-
   const [searchParams, setSearchParams] = useSearchParams();
   const sort = searchParams.get("sort") || "-likes";
 
-
-  const { data: countries, isLoading, isError } = useQuery({
+  const {
+    data: countries,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["countries-list", sort],
     queryFn: async () => {
       console.log("Fetching countries with sort:", sort);
       const countries = await getCountries(sort);
-  
+
       return countries.sort((a, b) => {
         if (sort === "population") {
           return parseInt(a.population) - parseInt(b.population); // ASC for population
@@ -71,8 +73,6 @@ const CardSectionview: React.FC = () => {
       });
     },
   });
-  
-
 
   const addCountryMutation = useMutation<
     CountryProp,
@@ -85,14 +85,12 @@ const CardSectionview: React.FC = () => {
     },
   });
 
-
   const updateCountryMutation = useMutation<CountryProp, Error, CountryProp>({
     mutationFn: (country: CountryProp) => UpdateCountries(country),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["countries-list"] });
     },
   });
-
 
   const deleteCountryMutation = useMutation<void, Error, string | number>({
     mutationFn: (id: string | number) => DeleteCountries(id),
@@ -101,16 +99,13 @@ const CardSectionview: React.FC = () => {
     },
   });
 
-
   const handleAddCountry = async () => {
     await addCountryMutation.mutateAsync(newCountry);
   };
 
-
   const handleDeleteCountry = async (id: string) => {
     await deleteCountryMutation.mutateAsync(id);
   };
-
 
   const handleEditCountry = async () => {
     if (editingCountry) {
@@ -118,7 +113,6 @@ const CardSectionview: React.FC = () => {
       setEditingCountry(null);
     }
   };
-
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -131,9 +125,8 @@ const CardSectionview: React.FC = () => {
     }
   };
 
-
   const handledetailpage = (id: string) => {
-    const lang = "en"; 
+    const lang = "en";
     navigate(`/${lang}/articles/${id}`);
   };
 
@@ -141,12 +134,11 @@ const CardSectionview: React.FC = () => {
     setSearchParams({ sort: order === "asc" ? "population" : "-population" });
     queryClient.invalidateQueries({ queryKey: ["countries-list"] });
   };
-  
 
   return (
     <>
       <Herosection />
-      <div style={{marginLeft:"8%"}}>
+      <div style={{ marginLeft: "8%" }}>
         <button onClick={() => handleSortChange("asc")}>Sort ASC</button>
         <button onClick={() => handleSortChange("desc")}>Sort DESC</button>
       </div>
@@ -241,24 +233,38 @@ const CardSectionview: React.FC = () => {
             itemCount={countries?.length || 0}
             itemSize={300}
             width="100%"
-            style={{display:"flex", flexDirection:"column", gap:"20%"}}
+            style={{ display: "flex", flexDirection: "column", gap: "20%" }}
           >
             {({ index, style }) => {
               const item = countries?.[index];
               if (!item) return null;
               return (
                 <Card key={item.id} style={style}>
-                  <img src={item.img} style={{ width: "200px", margin: "0 5% 0 0" }} />
+                  <img
+                    src={item.img}
+                    style={{ width: "200px", margin: "0 5% 0 0" }}
+                  />
                   <LazyCardinfo>
                     <LazyCardTitle>Country: {item.country}</LazyCardTitle>
                     <LazyCardDescription>
                       <LazyCardpop>Capital: {item.capital}</LazyCardpop>
-                      <LazyCardCapital>Population: {item.population}</LazyCardCapital>
+                      <LazyCardCapital>
+                        Population: {item.population}
+                      </LazyCardCapital>
                     </LazyCardDescription>
                   </LazyCardinfo>
-                  <button onClick={() => handleDeleteCountry(item.id)}>Delete</button>
-                  <button onClick={() => setEditingCountry(item)} style={{ margin: "0% 5%" }}>Edit</button>
-                  <button onClick={() => handledetailpage(item.id)}>Detail</button>
+                  <button onClick={() => handleDeleteCountry(item.id)}>
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => setEditingCountry(item)}
+                    style={{ margin: "0% 5%" }}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={() => handledetailpage(item.id)}>
+                    Detail
+                  </button>
                 </Card>
               );
             }}
@@ -271,4 +277,3 @@ const CardSectionview: React.FC = () => {
 };
 
 export default CardSectionview;
-

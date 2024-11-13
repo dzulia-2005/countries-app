@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import styles from "./styles.module.css";  // Import the CSS module
+import styles from "./styles.module.css"; // Import the CSS module
 
 type CardProps = {
   children: ReactNode;

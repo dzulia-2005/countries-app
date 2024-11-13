@@ -11,12 +11,14 @@ export type CountryProp = {
 
 export const getCountries = async (sort: string): Promise<CountryProp[]> => {
   try {
-    const isDescending = sort.startsWith('-'); 
+    const isDescending = sort.startsWith("-");
     const sortField = isDescending ? sort.substring(1) : sort;
-    const order = isDescending ? 'desc' : 'asc';
-    
-    const res = await httpClient.get(`/countries?_sort=${sortField}&_order=${order}`);
-    return res.data; 
+    const order = isDescending ? "desc" : "asc";
+
+    const res = await httpClient.get(
+      `/countries?_sort=${sortField}&_order=${order}`,
+    );
+    return res.data;
   } catch (error) {
     console.log("Error fetching countries:", error);
     return [];

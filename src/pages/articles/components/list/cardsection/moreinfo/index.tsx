@@ -14,11 +14,15 @@ type CountryDetailProps = {
 const CountryDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: country, isLoading, isError } = useQuery<CountryDetailProps>({
+  const {
+    data: country,
+    isLoading,
+    isError,
+  } = useQuery<CountryDetailProps>({
     queryKey: ["country-detail", id],
     queryFn: () => getCountryById(id!),
-    gcTime:1000*6,
-    staleTime:1000*6
+    gcTime: 1000 * 6,
+    staleTime: 1000 * 6,
   });
 
   if (isLoading) return <p>Loading country details...</p>;
@@ -28,7 +32,7 @@ const CountryDetail: React.FC = () => {
     <div>
       <h1>{country?.country}</h1>
       <img
-        src={country?.img || '/path/to/default/flag.png'}
+        src={country?.img || "/path/to/default/flag.png"}
         alt={`${country?.country} flag`}
         style={{ width: "200px" }}
       />

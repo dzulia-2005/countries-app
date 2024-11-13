@@ -28,14 +28,14 @@ function App() {
             }
           />
 
-        <Route
-          path="/:lang/articles/:id"
-          element={
-            <Suspense fallback={<div>Loading Article Detail...</div>}>
-              <CountryDetail />
-            </Suspense>
-          }
-        />
+          <Route
+            path="/:lang/articles/:id"
+            element={
+              <Suspense fallback={<div>Loading Article Detail...</div>}>
+                <CountryDetail />
+              </Suspense>
+            }
+          />
 
           <Route
             path="about"
